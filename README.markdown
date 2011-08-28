@@ -12,6 +12,7 @@ API
 ---
 
 sql
+
 	CREATE TABLE `attempts` (
 	  `id` char(36) NOT NULL DEFAULT '',
 	  `ip` varchar(64) DEFAULT NULL,
