@@ -4,8 +4,27 @@ Attempt Component
 A simple component to protect sensitive actions from brute force attacks.
 
 
+Installation
+------------
+
+
 API
 ---
+
+sql
+	CREATE TABLE `attempts` (
+	  `id` char(36) NOT NULL DEFAULT '',
+	  `ip` varchar(64) DEFAULT NULL,
+	  `action` varchar(32) DEFAULT NULL,
+	  `created` datetime DEFAULT NULL,
+	  `expires` datetime DEFAULT NULL,
+	  PRIMARY KEY (`id`),
+	  KEY `ip` (`ip`,`action`),
+	  KEY `expires` (`expires`)
+	) ENGINE=MyISAM DEFAULT CHARSET=utf8
+
+add submodule
+`git submodule add git://github.com/sams/Attempts.git  plugins/attempts`
 
 ### count($action)
 Returns the number of failed attempts for a certain action.
@@ -23,20 +42,6 @@ Deletes all failed attempts for a certain action
 Deletes all expired failed attempts from the database. This should be run via CakeShell (ideally as a CRON job) every now and then. 
 
 
-Schema
-------
-
-	CREATE TABLE `attempts` (
-	  `id` char(36) NOT NULL DEFAULT '',
-	  `ip` varchar(64) DEFAULT NULL,
-	  `action` varchar(32) DEFAULT NULL,
-	  `created` datetime DEFAULT NULL,
-	  `expires` datetime DEFAULT NULL,
-	  PRIMARY KEY (`id`),
-	  KEY `ip` (`ip`,`action`),
-	  KEY `expires` (`expires`)
-	) ENGINE=MyISAM DEFAULT CHARSET=utf8
-
 
 Example Implementation
 ----------------------
@@ -44,7 +49,7 @@ Example Implementation
 	class ExampleController extends Controller {
 		
 		var $components = array(
-			'Attempt'
+			'Attempts.Attempt'
 			);
 		
 		var $loginAttemptLimit = 10;
